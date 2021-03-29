@@ -1,14 +1,11 @@
-Attribute VB_Name = "Module"
+Attribute VB_Name = "Module2"
 
 
 Sub Ticker()
-'Dim ws As Worksheet
-    Dim WS_Count As Integer
-    Dim ws As Integer
+Dim ws As Worksheet
+For Each ws In Worksheets
       
-    WS_Count = ActiveWorkbook.Worksheets.Count
-      
-    For ws = 1 To WS_Count
+         
       'Set variables for holding values
       
       Dim Open_Price As Single
@@ -50,32 +47,32 @@ Sub Ticker()
       Dim i As Long
       
       'Titles for summary rows
-      Range("I1").Value = "Ticker"
-      Range("J1").Value = "Yearly Change"
-      Range("K1").Value = "Percent Change"
-      Range("L1").Value = "Total Stock"
-      Range("O1").Value = "Greatest % Increase"
-      Range("O2").Value = "Greatest % Decrease"
-      Range("O3").Value = "Greatest Total Volume"
-      Range("O:O").Columns.AutoFit
+      ws.Range("I1").Value = "Ticker"
+      ws.Range("J1").Value = "Yearly Change"
+      ws.Range("K1").Value = "Percent Change"
+      ws.Range("L1").Value = "Total Stock"
+      ws.Range("O1").Value = "Greatest % Increase"
+      ws.Range("O2").Value = "Greatest % Decrease"
+      ws.Range("O3").Value = "Greatest Total Volume"
+      ws.Range("O:O").Columns.AutoFit
       
       
       'Var for last row
-      Lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+      Lastrow = ws.Cells(Rows.Count, 1).End(xlUp).Row
       
-      Open_Price = Cells(2, 3).Value
+      Open_Price = ws.Cells(2, 3).Value
       
       For i = 2 To Lastrow
       
-        If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+        If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
             'Fill ticker name
-            Ticker = Cells(i, 1).Value
+            Ticker = ws.Cells(i, 1).Value
             Range("I" & Summary_Table_Row).Value = Ticker
             
             
             
             'Set Open/Close Price vars
-            Close_Price = Cells(i, 6).Value
+            Close_Price = ws.Cells(i, 6).Value
            
             Delta_Price = Close_Price - Open_Price
             
@@ -86,19 +83,19 @@ Sub Ticker()
             
             
             'Add total stock for ticker
-            Total_Stock = Total_Stock + Cells(i, 7).Value
+            Total_Stock = Total_Stock + ws.Cells(i, 7).Value
                     
             'Add values to Summary Table
-            Range("L" & Summary_Table_Row).Value = Total_Stock
+            ws.Range("L" & Summary_Table_Row).Value = Total_Stock
             'Percent Change
-            Range("K" & Summary_Table_Row).Value = (CStr(Percent_Change) & "%")
+            ws.Range("K" & Summary_Table_Row).Value = (CStr(Percent_Change) & "%")
             
             'Fill Yearly Change
-            Range("J" & Summary_Table_Row).Value = Math.Round(Delta_Price, 2)
+            ws.Range("J" & Summary_Table_Row).Value = Math.Round(Delta_Price, 2)
             If (Delta_Price > 0) Then
-                Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
+                ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
              ElseIf (Delta_Price < 0) Then
-                Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
+                ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
                 
             End If
     
@@ -110,10 +107,10 @@ Sub Ticker()
             Total_Stock = 0
             Delta_Price = 0
             Percent_Change = 0
-            Open_Price = Cells(i + 1, 3).Value
+            Open_Price = ws.Cells(i + 1, 3).Value
             Else
       
-            Total_Stock = Total_Stock + Cells(i, 7).Value
+            Total_Stock = Total_Stock + ws.Cells(i, 7).Value
         
         End If
             
@@ -124,17 +121,17 @@ Sub Ticker()
      Next i
         'Compute Greatest Percent Increase, Decrease and Total Stock Volume
         Max_Increase = WorksheetFunction.Max(Range("K:K"))
-        Range("P1").Value = (CStr(Max_Increase * 100) & "%")
+        ws.Range("P1").Value = (CStr(Max_Increase * 100) & "%")
     
         Max_Decrease = WorksheetFunction.Min(Range("K:K"))
-        Range("P2").Value = (CStr(Max_Decrease * 100) & "%")
+        ws.Range("P2").Value = (CStr(Max_Decrease * 100) & "%")
     
         Max_Volume = WorksheetFunction.Max(Range("L:L"))
-        Range("P3").Value = Max_Volume
-        Range("P3").Columns.AutoFit
-        Range("L:L").Columns.AutoFit
+        ws.Range("P3").Value = Max_Volume
+        ws.Range("P3").Columns.AutoFit
+        ws.Range("L:L").Columns.AutoFit
         
-        MsgBox ActiveWorkbook.Worksheets(ws).Name
+       
     Next ws
     
     End Sub

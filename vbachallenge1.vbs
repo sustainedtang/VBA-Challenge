@@ -1,6 +1,7 @@
 Attribute VB_Name = "Module2"
 
 
+
 Sub Ticker()
 Dim ws As Worksheet
 For Each ws In Worksheets
@@ -67,7 +68,7 @@ For Each ws In Worksheets
         If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
             'Fill ticker name
             Ticker = ws.Cells(i, 1).Value
-            Range("I" & Summary_Table_Row).Value = Ticker
+            ws.Range("I" & Summary_Table_Row).Value = Ticker
             
             
             
@@ -135,5 +136,3 @@ For Each ws In Worksheets
     Next ws
     
     End Sub
-    
-    
